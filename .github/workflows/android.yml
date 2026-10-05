@@ -4,21 +4,33 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
+env:
+  EDRIC_REF: 61970be77769f607cca8650bf424c0f0b22ddee7
+  SHADER_BACKEND_REF: 7876b79058d6f59711151a21697369c1cf72df2f
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
           repository: isomorphisms/Idric
+          ref: ${{ env.EDRIC_REF }}
           path: deps/Idric
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
         with:
-          repository: isomorphisms/idris-shader-backend
+          repository: fuego-ironworks/idris-shader-backend
+          ref: ${{ env.SHADER_BACKEND_REF }}
           path: deps/idris-shader-backend
 
       - name: Install Edric host dependencies
@@ -86,7 +98,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
 
       - uses: actions/setup-java@v4
         with:

@@ -5,20 +5,20 @@ import Surface.Common
 
 %default total
 
-cosh : Double -> Double
-cosh value = 0.5 * (powF 2.718281828459045 value + powF 2.718281828459045 (0.0 - value))
+hyperbolic_cosine : Double -> Double
+hyperbolic_cosine value = 0.5 * (powF 2.718281828459045 value + powF 2.718281828459045 (0.0 - value))
 
-sinh : Double -> Double
-sinh value = 0.5 * (powF 2.718281828459045 value - powF 2.718281828459045 (0.0 - value))
+hyperbolic_sine : Double -> Double
+hyperbolic_sine value = 0.5 * (powF 2.718281828459045 value - powF 2.718281828459045 (0.0 - value))
 
 field : SVec 3 -> Double
 field point =
-  square (x point) + square (y point) - square (cosh (z point))
+  square (x point) + square (y point) - square (hyperbolic_cosine (z point))
 
 gradient : SVec 3 -> SVec 3
 gradient point =
-  let cz = cosh (z point)
-      sz = sinh (z point)
+  let cz = hyperbolic_cosine (z point)
+      sz = hyperbolic_sine (z point)
    in vec3 (2.0 * x point) (2.0 * y point) (0.0 - 2.0 * cz * sz)
 
 distance_estimate : SVec 3 -> Double
